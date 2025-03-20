@@ -8,6 +8,15 @@ public class DTOClassForMultipleTo {
 
     private String attachment;
 
+
+    public DTOClassForMultipleTo(String[] toMail, String toCc, String subject, String text, String attachment) {
+        this.toMail = toMail;
+        this.toCc = toCc;
+        this.subject = subject;
+        this.text = text;
+        this.attachment = attachment;
+    }
+
     public String[] getToMail() {
         return toMail;
     }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.UUID;
 
 @Service
@@ -23,6 +24,10 @@ public class EmailSenderService {
 
     private final Logger logger = LogManager.getLogger(EmailSenderService.class);
     public void sendEmail(String toEmailAddress,String body,String subject) throws MessagingException {
+
+        if(toEmailAddress==null){
+            throw new NullPointerException("To Mail Id null");
+        }
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
@@ -46,9 +51,22 @@ public class EmailSenderService {
 
     public void sendMailWithCc(String toMail,String toCc,String subject,String text) throws MessagingException {
 
+        if(toMail==null || toMail.isBlank()){
+            throw new NullPointerException("to Mail Null");
+        } else if (toCc==null || toCc.isBlank()) {
+            throw new NullPointerException("to CC Null");
+        }
+
+        if(!(toMail.matches("^[A-Z][a-z]+( | [A-Z]|[A-Z][a-z]+)*"))){
+            throw new IllegalArgumentException("Invalid Mail Format");
+        }
+
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true);
+
+
+
 
         mimeMessageHelper.setFrom("balasubramanian.kannan@finsurge.tech");
         mimeMessageHelper.setTo(toMail);
@@ -64,11 +82,20 @@ public class EmailSenderService {
     }
 
 
-    public void sendMailWithMultipleTo(String[] toMail,String toCc,String subject,String text,String attachment) throws MessagingException {
+    public void sendMailWithMultipleTo(String[] toMail,String toCc,String subject,String text,String attachment) throws MessagingException, FileNotFoundException {
+
+
+        File file = new File(attachment);
+        if(!file.exists()){
+            throw new FileNotFoundException("File Not Found");
+        }
+
 
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,true);
+
+
 
         mimeMessageHelper.setFrom("balasubramanian.kannan@finsurge.tech");
         mimeMessageHelper.setTo(toMail);

@@ -6,6 +6,13 @@ public class DTOClassForCC {
     private String subject;
     private String text;
 
+    public DTOClassForCC(String toMail, String toCc, String subject, String text) {
+        this.toMail = toMail;
+        this.toCc = toCc;
+        this.subject = subject;
+        this.text = text;
+    }
+
     public String getToMail() {
         return toMail;
     }

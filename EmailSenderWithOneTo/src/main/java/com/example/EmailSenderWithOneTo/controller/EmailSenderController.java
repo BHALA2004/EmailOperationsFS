@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileNotFoundException;
+
 @RestController
 @RequestMapping("/api/")
 public class EmailSenderController {
@@ -36,7 +38,7 @@ public class EmailSenderController {
     }
 
     @GetMapping("/sendwithMultipleTo")
-    public ResponseEntity<String> sendMailWithMultipleTo(@RequestBody DTOClassForMultipleTo dtoClassForCC) throws MessagingException {
+    public ResponseEntity<String> sendMailWithMultipleTo(@RequestBody DTOClassForMultipleTo dtoClassForCC) throws MessagingException, FileNotFoundException {
         emailSenderService.sendMailWithMultipleTo(dtoClassForCC.getToMail(), dtoClassForCC.getToCc(), dtoClassForCC.getSubject(), dtoClassForCC.getText(),dtoClassForCC.getAttachment());
         return new ResponseEntity<>("Email Send Successfully", HttpStatus.OK);
     }
